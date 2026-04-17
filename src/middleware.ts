@@ -7,7 +7,8 @@ type CookieToSet = { name: string; value: string; options: CookieOptions };
 const PROTECTED_PATHS = ['/dashboard', '/log', '/sessions', '/profile'];
 
 export async function middleware(request: NextRequest) {
-  const isProtected = PROTECTED_PATHS.some((p) => request.nextUrl.pathname.startsWith(p));
+  const path = request.nextUrl.pathname;
+  const isProtected = PROTECTED_PATHS.some((p) => path === p || path.startsWith(p + '/'));
   const redirectToLogin = () => {
     const url = request.nextUrl.clone();
     url.pathname = '/login';
