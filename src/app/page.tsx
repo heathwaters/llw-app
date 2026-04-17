@@ -3,8 +3,13 @@ import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 
 export default async function HomePage() {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  let user = null;
+  try {
+    const supabase = await createClient();
+    ({ data: { user } } = await supabase.auth.getUser());
+  } catch (err) {
+    console.error('[HomePage] Supabase error', err);
+  }
   if (user) redirect('/dashboard');
 
   return (
