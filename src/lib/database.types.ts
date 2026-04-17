@@ -1,5 +1,5 @@
-// Auto-generated from schema. Re-generate with: supabase gen types typescript
-// For now this is hand-written to match supabase/migrations/0001_init.sql
+// Hand-written to match supabase/migrations/0001_init.sql and 0002_food_log.sql.
+// Regenerate with: supabase gen types typescript --project-id YOUR_REF > src/lib/database.types.ts
 
 export type SessionType =
   | 'strength' | 'cardio' | 'power' | 'agility'
@@ -10,16 +10,23 @@ export type SessionType =
 export type ExerciseCategory =
   | 'strength' | 'power' | 'cardio' | 'mobility' | 'agility' | 'plyometric';
 
-export interface Profile {
+export type MealType = 'breakfast' | 'lunch' | 'dinner' | 'snack';
+
+export type Profile = {
   id: string;
   display_name: string | null;
   bodyweight_unit: 'lb' | 'kg';
   golf_handicap: number | null;
   tennis_utr: number | null;
+  cal_target: number | null;
+  protein_target: number | null;
+  carbs_target: number | null;
+  fat_target: number | null;
+  bodyweight_goal: number | null;
   created_at: string;
-}
+};
 
-export interface Exercise {
+export type Exercise = {
   id: string;
   owner_id: string | null;
   name: string;
@@ -28,9 +35,10 @@ export interface Exercise {
   is_unilateral: boolean;
   is_rotational: boolean;
   notes: string | null;
-}
+  created_at: string;
+};
 
-export interface Session {
+export type Session = {
   id: string;
   user_id: string;
   session_date: string;
@@ -41,17 +49,17 @@ export interface Session {
   notes: string | null;
   created_at: string;
   updated_at: string;
-}
+};
 
-export interface SessionExercise {
+export type SessionExercise = {
   id: string;
   session_id: string;
   exercise_id: string;
   sort_order: number;
   notes: string | null;
-}
+};
 
-export interface ExerciseSet {
+export type ExerciseSet = {
   id: string;
   session_exercise_id: string;
   set_number: number;
@@ -62,9 +70,9 @@ export interface ExerciseSet {
   distance_meters: number | null;
   rpe: number | null;
   is_warmup: boolean;
-}
+};
 
-export interface DailyMetric {
+export type DailyMetric = {
   id: string;
   user_id: string;
   metric_date: string;
@@ -75,18 +83,52 @@ export interface DailyMetric {
   soreness: number | null;
   energy: number | null;
   stress: number | null;
+  water_l: number | null;
+  mobility: string | null;
   notes: string | null;
-}
+};
 
-export interface Database {
+export type FoodEntry = {
+  id: string;
+  user_id: string;
+  log_date: string;
+  meal: MealType;
+  name: string;
+  serving_size: string | null;
+  servings: number;
+  calories: number;
+  protein: number | null;
+  carbs: number | null;
+  fat: number | null;
+  fiber: number | null;
+  is_custom: boolean;
+  created_at: string;
+};
+
+type Table<Row, RequiredInsertKeys extends keyof Row = never> = {
+  Row: Row;
+  Insert: Partial<Row> & Pick<Row, RequiredInsertKeys>;
+  Update: Partial<Row>;
+  Relationships: [];
+};
+
+export type Database = {
+  __InternalSupabase: {
+    PostgrestVersion: '12';
+  };
   public: {
     Tables: {
-      profiles: { Row: Profile; Insert: Partial<Profile> & { id: string }; Update: Partial<Profile> };
-      exercises: { Row: Exercise; Insert: Partial<Exercise> & { name: string; category: ExerciseCategory }; Update: Partial<Exercise> };
-      sessions: { Row: Session; Insert: Partial<Session> & { user_id: string; session_type: SessionType }; Update: Partial<Session> };
-      session_exercises: { Row: SessionExercise; Insert: Omit<SessionExercise, 'id'>; Update: Partial<SessionExercise> };
-      exercise_sets: { Row: ExerciseSet; Insert: Omit<ExerciseSet, 'id'>; Update: Partial<ExerciseSet> };
-      daily_metrics: { Row: DailyMetric; Insert: Partial<DailyMetric> & { user_id: string }; Update: Partial<DailyMetric> };
+      profiles: Table<Profile, 'id'>;
+      exercises: Table<Exercise, 'name' | 'category'>;
+      sessions: Table<Session, 'user_id' | 'session_type'>;
+      session_exercises: Table<SessionExercise, 'session_id' | 'exercise_id'>;
+      exercise_sets: Table<ExerciseSet, 'session_exercise_id' | 'set_number'>;
+      daily_metrics: Table<DailyMetric, 'user_id' | 'metric_date'>;
+      food_entries: Table<FoodEntry, 'user_id' | 'meal' | 'name' | 'calories'>;
     };
+    Views: Record<string, never>;
+    Functions: Record<string, never>;
+    Enums: Record<string, never>;
+    CompositeTypes: Record<string, never>;
   };
-}
+};

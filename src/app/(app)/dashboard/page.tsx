@@ -53,7 +53,7 @@ export default async function DashboardPage() {
             <div className="text-2xl font-bold">{totalMinutes}</div>
             <div className="text-xs opacity-80">Total minutes</div>
           </div>
-          {profile?.golf_handicap !== null && (
+          {profile?.golf_handicap != null && (
             <div>
               <div className="text-2xl font-bold">{profile.golf_handicap}</div>
               <div className="text-xs opacity-80">Handicap</div>
