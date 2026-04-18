@@ -105,6 +105,36 @@ export type FoodEntry = {
   created_at: string;
 };
 
+export type GolfRound = {
+  id: string;
+  session_id: string;
+  course_name: string | null;
+  tees: string | null;
+  course_rating: number | null;
+  slope_rating: number | null;
+  holes_played: number | null;
+  total_score: number | null;
+  total_putts: number | null;
+  fairways_hit: number | null;
+  fairways_possible: number | null;
+  greens_in_regulation: number | null;
+  weather: string | null;
+  conditions_notes: string | null;
+};
+
+export type TennisSession = {
+  id: string;
+  session_id: string;
+  is_match: boolean;
+  opponent_name: string | null;
+  opponent_utr: number | null;
+  surface: 'hard' | 'clay' | 'grass' | 'indoor' | null;
+  score: string | null;
+  result: 'win' | 'loss' | 'draw' | null;
+  serve_speed_max_mph: number | null;
+  notes: string | null;
+};
+
 type Table<Row, RequiredInsertKeys extends keyof Row = never> = {
   Row: Row;
   Insert: Partial<Row> & Pick<Row, RequiredInsertKeys>;
@@ -125,6 +155,8 @@ export type Database = {
       exercise_sets: Table<ExerciseSet, 'session_exercise_id' | 'set_number'>;
       daily_metrics: Table<DailyMetric, 'user_id' | 'metric_date'>;
       food_entries: Table<FoodEntry, 'user_id' | 'meal' | 'name' | 'calories'>;
+      golf_rounds: Table<GolfRound, 'session_id'>;
+      tennis_sessions: Table<TennisSession, 'session_id'>;
     };
     Views: Record<string, never>;
     Functions: Record<string, never>;

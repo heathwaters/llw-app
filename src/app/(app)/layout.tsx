@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Home, BarChart3, Plus, Calendar, User } from 'lucide-react';
+import { Home, BarChart3, Plus, Calendar, User, UtensilsCrossed } from 'lucide-react';
 import { logOut } from '../(auth)/actions';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
@@ -21,6 +21,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           <Link href="/log" className="bg-accent text-white rounded-full w-12 h-12 flex items-center justify-center -mt-4 shadow-lg shadow-accent/40">
             <Plus className="w-6 h-6" />
           </Link>
+          <NavLink href="/food" icon={<UtensilsCrossed className="w-5 h-5" />} label="Food" />
           <NavLink href="/stats" icon={<BarChart3 className="w-5 h-5" />} label="Stats" />
           <NavLink href="/profile" icon={<User className="w-5 h-5" />} label="Profile" />
         </div>
